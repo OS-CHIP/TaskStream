@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.ProjectMapper">
+
+
+    <select id="queryParticipatedProjects" resultType="com.example.demo.api.tb.domain.Project">
+        SELECT DISTINCT p.project_name ,p.status ,p.description ,p.create_time ,p.invite_code ,p.update_time ,p.id, p.owner,p.parent_id
+        FROM project p
+        JOIN project_role pr ON p.id = pr.project_id
+        JOIN role_user ru ON pr.role_id = ru.role_id
+        WHERE
+         p.is_deleted = 0
+        <if test="userId != null and userId != ''">
+            AND ru.user_id = #{userId}
+        </if>
+        <if test="projectName != null and projectName != ''">
+            AND p.project_name LIKE CONCAT('%', #{projectName}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND p.status = #{status}
+        </if>
+
+        order by p.create_time desc
+    </select>
+
+    <select id="queryProjectUsers" resultType="com.example.demo.api.tb.domain.vo.ProjectMemberVO">
+        SELECT
+        su.email ,
+        su.user_name,
+        r.role_name,
+        su.id as userId
+        FROM
+        sys_user su
+        JOIN
+        role_user ru ON su.id = ru.user_id
+        JOIN
+        roles r ON ru.role_id = r.role_id
+        JOIN
+        project_role pr ON r.role_id = pr.role_id
+        JOIN
+        project p ON pr.project_id = p.id
+        <where>
+            <if test="projectId != null and projectId != ''">
+                and p.id = #{projectId}
+            </if>
+        </where>
+        order by su.id
+    </select>
+
+    <select id="queryProjectUsersByName" resultType="com.example.demo.api.tb.domain.vo.ProjectMemberVO">
+        SELECT
+        su.id as userId,
+        su.email ,
+        su.user_name,
+        r.role_name
+        FROM
+        sys_user su
+        JOIN
+        role_user ru ON su.id = ru.user_id
+        JOIN
+        roles r ON ru.role_id = r.role_id
+        JOIN
+        project_role pr ON r.role_id = pr.role_id
+        JOIN
+        project p ON pr.project_id = p.id
+        <where>
+            <if test="projectId != null and projectId != ''">
+                and p.id = #{projectId}
+
+            </if>
+            <if test="userName != null and userName != ''">
+                and su.user_name LIKE CONCAT('%', #{userName}, '%')
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="queryVisibleProjects" resultType="com.example.demo.api.tb.domain.Project">
+
+        select p.id, p.name
+        from project p
+        where p.status = "1";
+    </select>
+
+    <select id="getAllProjectIds" resultType="java.lang.Long">
+        WITH RECURSIVE sub_projects AS (
+            SELECT
+                id,
+                parent_id,
+                project_name,
+                1 as level
+            FROM project
+            WHERE id = #{projectId}
+              AND is_deleted = '0'
+
+            UNION ALL
+
+            SELECT
+                p.id,
+                p.parent_id,
+                p.project_name,
+                sp.level + 1
+            FROM project p
+                     INNER JOIN sub_projects sp ON p.parent_id = sp.id
+            WHERE p.is_deleted = '0'
+        )
+        SELECT DISTINCT id
+        FROM sub_projects
+    </select>
+    <select id="getProjectCountByUserId" resultType="java.lang.Long">
+
+        SELECT COUNT(DISTINCT p.id) AS total_count
+        FROM project p
+                 INNER JOIN project_role pr ON p.id = pr.project_id
+                 INNER JOIN role_user ru ON pr.role_id = ru.role_id
+        WHERE p.is_deleted = '0'
+          AND p.status = '1'
+          AND ru.user_id = #{loginIdAsString}
+
+
+    </select>
+    <select id="queryProjectTree" resultType="com.example.demo.api.tb.domain.vo.ProjectVO">
+        WITH RECURSIVE user_projects AS (
+            -- 1. 查找用户直接参与的所有项目（起点）
+            SELECT p.id,
+                   p.parent_id,
+                   p.owner,
+                   p.project_name          AS projectName,
+                   p.STATUS,
+                   p.description,
+                   p.invite_code           AS inviteCode,
+                   CAST(p.id AS CHAR(200)) AS path,
+                   1                       AS LEVEL
+            FROM project p
+                     INNER JOIN project_role pr ON pr.project_id = p.id
+                     INNER JOIN role_user ru ON ru.role_id = pr.role_id
+            WHERE  p.is_deleted = '0'
+            <if test="loginIdAsString != null and loginIdAsString != ''">
+                AND ru.user_id = #{loginIdAsString}
+            </if>
+
+            UNION ALL
+
+            -- 2. 递归查找子项目
+            SELECT p.id,
+                   p.parent_id,
+                   p.OWNER,
+                   p.project_name             AS projectName,
+                   p.STATUS,
+                   p.description,
+                   p.invite_code              AS inviteCode,
+                   CONCAT(up.path, ',', p.id) AS path,
+                   up.LEVEL + 1               AS LEVEL
+            FROM project p
+                     INNER JOIN user_projects up ON p.parent_id = up.id
+            WHERE p.is_deleted = '0'
+              AND up.LEVEL &lt; 100)
+
+        -- 3. 去重 + 关联 sys_user 获取 ownerName
+        SELECT t.id,
+               t.parent_id,
+               t.OWNER,
+               su.user_name AS ownerName, -- ✅ 新增字段
+               t.projectName,
+               t.STATUS,
+               t.description,
+               t.inviteCode,
+               t.LEVEL,
+               t.path
+        FROM (SELECT id,
+                     parent_id,
+                     OWNER,
+                     projectName,
+                     STATUS,
+                     description,
+                     inviteCode,
+                     LEVEL,
+                     path,
+                     ROW_NUMBER() OVER (PARTITION BY id ORDER BY LEVEL DESC) AS rn
+              FROM user_projects) t
+                 INNER JOIN sys_user su ON su.id = t.OWNER -- ✅ 关键：关联用户表
+        WHERE t.rn = 1
+        ORDER BY t.LEVEL DESC, t.id;
+
+
+    </select>
+
+</mapper>

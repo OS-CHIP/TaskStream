@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.TaskMapper">
+
+    <!-- 获取所有字段名称 -->
+    <select id="getFieldNames" resultType="string">
+        SELECT tf.name
+        FROM field_values fv
+        JOIN task_fields tf ON fv.field_id = tf.id
+        <where>
+            <if test="tasksId != null and tasksId != ''">
+                AND fv.tasks_id = #{tasksId}
+            </if>
+        </where>
+        ORDER BY tf.sort
+    </select>
+    <!-- 动态生成查询语句 -->
+    <select id="selectinfo" resultType="java.util.LinkedHashMap">
+        SELECT
+        fv.tasks_id,
+        <foreach item="field" index="index" collection="fields" open="" separator=", " close="">
+            MAX(CASE WHEN tf.name = #{field} THEN fv.value END) AS ${field}
+        </foreach>
+        FROM
+        field_values fv
+        JOIN
+        task_fields tf ON fv.field_id = tf.id
+        <where>
+            <if test="tasksId != null and tasksId != ''">
+                AND fv.tasks_id = #{tasksId}
+            </if>
+        </where>
+        GROUP BY
+        fv.tasks_id
+    </select>
+    <select id="queryTaskTemplate" resultType="java.util.LinkedHashMap">
+        select * from task_fields tf
+        <where>
+            <if test="taskTypeId != null and taskTypeId != ''">
+                AND tf.task_type_id = #{taskTypeId}
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="getAllTasksWithLevel" resultType="com.example.demo.api.tb.domain.vo.TaskVO">
+        WITH RECURSIVE
+        -- 第一步：向上找根节点
+        find_root AS (
+        SELECT id, parent_id
+        FROM task
+        WHERE id = #{taskId} AND is_deleted = '0'
+        UNION ALL
+        SELECT t.id, t.parent_id
+        FROM task t
+        INNER JOIN find_root fr ON t.id = fr.parent_id
+        WHERE t.is_deleted = '0'
+        ),
+        root_node AS (
+        SELECT id AS root_id
+        FROM find_root
+        WHERE parent_id = 0 OR parent_id IS NULL
+        LIMIT 1
+        ),
+        -- 第二步：从根向下构建完整树
+        task_tree AS (
+        SELECT
+        t.id,
+        t.task_title,
+        t.task_type_id,
+        t.project_id,
+        t.description,
+        t.priority,
+        t.assigner,
+        t.parent_id,
+        t.assignee,
+        t.estimated_hours,
+        t.status,
+        t.start_time,
+        t.due_date,
+        t.create_time,
+        t.create_by,
+        t.update_time,
+        t.update_by,
+        t.is_deleted,
+        0 AS level,
+        CAST(t.id AS CHAR(200)) AS path
+        FROM task t
+        CROSS JOIN root_node r
+        WHERE t.id = r.root_id AND t.is_deleted = '0'
+
+        UNION ALL
+
+        SELECT
+        t.id,
+        t.task_title,
+        t.task_type_id,
+        t.project_id,
+        t.description,
+        t.priority,
+        t.assigner,
+        t.parent_id,
+        t.assignee,
+        t.estimated_hours,
+        t.status,
+        t.start_time,
+        t.due_date,
+        t.create_time,
+        t.create_by,
+        t.update_time,
+        t.update_by,
+        t.is_deleted,
+        tt.level + 1 AS level,
+        CONCAT(tt.path, ',', t.id) AS path
+        FROM task t
+        INNER JOIN task_tree tt ON t.parent_id = tt.id
+        WHERE t.is_deleted = '0'
+        )
+        -- 第三步：返回结果，并标记目标节点
+        SELECT
+        id,
+        task_title,
+        task_type_id,
+        project_id,
+        description,
+        priority,
+        assigner,
+        parent_id,
+        assignee,
+        estimated_hours,
+        status,
+        start_time,
+        due_date,
+        create_time,
+        create_by,
+        update_time,
+        update_by,
+        is_deleted,
+        level,
+        path,
+        CASE WHEN id = #{taskId} THEN TRUE ELSE FALSE END AS is_target
+        FROM task_tree
+        ORDER BY path
+
+
+        <!--        WITH RECURSIVE task_tree AS (-->
+        <!--            &#45;&#45; 基础查询：选择所有顶级任务（parent_id IS NULL 且未删除）-->
+        <!--            SELECT-->
+        <!--                id,-->
+        <!--                task_title,-->
+        <!--                task_type_id,-->
+        <!--                project_id,-->
+        <!--                description,-->
+        <!--                priority,-->
+        <!--                assigner,-->
+        <!--                parent_id,-->
+        <!--                assignee,-->
+        <!--                estimated_hours,-->
+        <!--                status,-->
+        <!--                start_time,-->
+        <!--                due_date,-->
+        <!--                create_time,-->
+        <!--                create_by,-->
+        <!--                update_time,-->
+        <!--                update_by,-->
+        <!--                is_deleted,-->
+        <!--                0 AS level,-->
+        <!--                CAST(id AS CHAR(200)) AS path-->
+        <!--            FROM-->
+        <!--                task-->
+
+        <!--        <where>-->
+        <!--            is_deleted = '0'-->
+        <!--            and parent_id = '0'-->
+        <!--            <if test="taskId != null">-->
+        <!--                AND id = #{taskId}-->
+        <!--            </if>-->
+        <!--        </where>-->
+
+
+        <!--            UNION ALL-->
+
+        <!--            &#45;&#45; 递归查询：选择子任务，关联到父任务-->
+        <!--            SELECT-->
+        <!--                t.id,-->
+        <!--                t.task_title,-->
+        <!--                t.task_type_id,-->
+        <!--                t.project_id,-->
+        <!--                t.description,-->
+        <!--                t.priority,-->
+        <!--                t.assigner,-->
+        <!--                t.parent_id,-->
+        <!--                t.assignee,-->
+        <!--                t.estimated_hours,-->
+        <!--                t.status,-->
+        <!--                t.start_time,-->
+        <!--                t.due_date,-->
+        <!--                t.create_time,-->
+        <!--                t.create_by,-->
+        <!--                t.update_time,-->
+        <!--                t.update_by,-->
+        <!--                t.is_deleted,-->
+        <!--                tt.level + 1,-->
+        <!--                CONCAT(tt.path, ',', t.id) AS path-->
+        <!--            FROM-->
+        <!--                task t-->
+        <!--                    INNER JOIN-->
+        <!--                task_tree tt ON t.parent_id = tt.id-->
+        <!--            WHERE-->
+        <!--                t.is_deleted = '0'-->
+        <!--        )-->
+        <!--        SELECT-->
+        <!--            id,-->
+        <!--            task_title,-->
+        <!--            task_type_id,-->
+        <!--            project_id,-->
+        <!--            description,-->
+        <!--            priority,-->
+        <!--            assigner,-->
+        <!--            parent_id,-->
+        <!--            assignee,-->
+        <!--            estimated_hours,-->
+        <!--            status,-->
+        <!--            start_time,-->
+        <!--            due_date,-->
+        <!--            create_time,-->
+        <!--            create_by,-->
+        <!--            update_time,-->
+        <!--            update_by,-->
+        <!--            is_deleted,-->
+        <!--            level,-->
+        <!--            path-->
+        <!--        FROM-->
+        <!--            task_tree-->
+        <!--        ORDER BY-->
+        <!--            path-->
+
+
+    </select>
+    <select id="getChildrenTasks" resultType="com.example.demo.api.tb.domain.Task">
+
+        SELECT t.id,
+               t.task_title,
+               t.task_type_id,
+               t.project_id,
+               t.description,
+               t.priority,
+               t.assigner,
+               t.assignee,
+               t.estimated_hours,
+               t.status,
+               t.start_time,
+               t.due_date,
+               t.create_time,
+               t.create_by,
+               t.update_time,
+               t.update_by
+        FROM task t
+                 INNER JOIN task_relation r ON t.id = r.child_task_id
+        WHERE r.parent_task_id = #{parentId}
+          AND r.is_deleted = '0'
+          AND t.is_deleted = '0'
+        ORDER BY t.create_time DESC
+    </select>
+    <select id="selectParentTasks" resultType="com.example.demo.api.tb.domain.Task">
+        SELECT t.id,
+               t.task_title,
+               t.task_type_id,
+               t.project_id,
+               t.description,
+               t.priority,
+               t.assigner,
+               t.assignee,
+               t.estimated_hours,
+               t.status,
+               t.start_time,
+               t.due_date,
+               t.create_time,
+               t.create_by,
+               t.update_time,
+               t.update_by
+        FROM task t
+                 INNER JOIN task_relation r ON t.id = r.parent_task_id
+        WHERE r.child_task_id = #{childId}
+          AND r.is_deleted = '0'
+          AND t.is_deleted = '0'
+        ORDER BY t.create_time DESC
+    </select>
+    <select id="selectTaskDetailById" resultType="com.example.demo.api.tb.domain.vo.TaskVO">
+
+
+        SELECT t.*,
+               tt.name                              AS taskTypeName,
+               COALESCE(
+                       (SELECT JSON_OBJECTAGG(
+                                       tf.name,
+                                       JSON_OBJECT(
+                                               'value', IFNULL(fv.value, ''),
+                                               'label', COALESCE(tf.label, ''),
+                                               'isRequired', COALESCE(tf.is_required, 0),
+                                               'isHidden', COALESCE(tf.is_hidden, 1),
+                                               'options', COALESCE(
+                                                       CASE
+                                                           WHEN tf.options IS NOT NULL AND tf.options != '' AND
+                                                       JSON_VALID(tf.options)
+                                                       THEN CAST(tf.options AS JSON)
+                                                       ELSE JSON_ARRAY()
+                                                       END,
+                                                       JSON_ARRAY()
+                                                          ),
+                                               'type', COALESCE(tf.type, ''),
+                                               'configOverride', COALESCE(tf.config_override, JSON_OBJECT())
+                                       )
+                               )
+                        FROM task_fields tf
+                                 LEFT JOIN task_field_values fv ON fv.tasks_id = t.id AND fv.field_id = tf.id
+                        WHERE tf.task_type_id = t.task_type_id
+                          AND tf.name IS NOT NULL
+                          AND tf.name != ''
+            ),
+            JSON_OBJECT()
+            ) AS dynamicFields
+        FROM task t
+                 INNER JOIN task_type tt ON t.task_type_id = tt.id
+        WHERE t.is_deleted = '0'
+          AND t.id = #{tasksId}
+
+    </select>
+
+    <select id="getOverViewByProjectId" resultType="com.example.demo.api.tb.domain.dto.TaskStaticsDTO">
+        SELECT COUNT(*)                                                 as totalTasks,
+               SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END)            as completedTasks,
+               COUNT(*) - SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as inProgressTasks
+        FROM task
+        WHERE project_id = #{projectId}
+          AND is_deleted = '0'
+    </select>
+
+    <select id="getStatusDistribution" resultType="com.example.demo.api.tb.domain.dto.StatusDTO">
+        SELECT status as status,
+               COUNT(*) as count,
+        ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM task WHERE project_id = #{projectId} AND is_deleted = '0'), 2) as percent
+        FROM task
+        WHERE project_id = #{projectId} AND is_deleted = '0'
+        GROUP BY status
+    </select>
+    <select id="getPriorityDistribution" resultType="com.example.demo.api.tb.domain.dto.PriorityDTO">
+        SELECT priority as level,
+               COUNT(*) as count
+        FROM task
+        WHERE project_id = #{projectId} AND is_deleted = '0'
+        GROUP BY priority
+    </select>
+    <select id="getOverviewByProjectIds" resultType="com.example.demo.api.tb.domain.dto.TaskStaticsDTO">
+        SELECT
+        COUNT(*) as totalTasks,
+        SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as completedTasks,
+        COUNT(*) - SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as inProgressTasks
+        FROM task
+        WHERE is_deleted = '0'
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        <if test="projectIds == null or projectIds.size() == 0">
+            AND 1 = 0  <!-- 如果没有项目ID，返回空 -->
+        </if>
+    </select>
+
+    <!-- 根据多个项目ID获取状态分布 -->
+    <select id="getStatusDistributionByProjectIds" resultType="com.example.demo.api.tb.domain.dto.StatusDTO">
+        WITH status_list AS (
+        SELECT 1 as status_id
+        UNION ALL SELECT 2
+        UNION ALL SELECT 3
+        UNION ALL SELECT 4
+        UNION ALL SELECT 5
+        ),
+        task_data AS (
+        SELECT
+        status,
+        COUNT(*) as status_count
+        FROM task
+        WHERE is_deleted = '0'
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        <if test="projectIds == null or projectIds.size() == 0">
+            AND 1 = 0
+        </if>
+        GROUP BY status
+        )
+        SELECT
+        sl.status_id as status,
+        COALESCE(td.status_count, 0) as count,
+        ROUND(
+        COALESCE(td.status_count, 0) * 100.0 /
+        NULLIF((
+        SELECT SUM(status_count) FROM task_data
+        ), 0),
+        2
+        ) as percent
+        FROM status_list sl
+        LEFT JOIN task_data td ON sl.status_id = td.status
+        ORDER BY sl.status_id
+    </select>
+
+    <!-- 根据多个项目ID获取优先级分布 -->
+    <select id="getPriorityDistributionByProjectIds" resultType="com.example.demo.api.tb.domain.dto.PriorityDTO">
+        SELECT
+        t.level as level,
+        COALESCE(COUNT(CASE WHEN task.priority = t.level THEN 1 END), 0) as count
+        FROM (
+        SELECT 1 as level
+        UNION ALL SELECT 2
+        UNION ALL SELECT 3
+        ) t
+        LEFT JOIN task ON task.priority = t.level
+        AND task.is_deleted = '0'
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND task.project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        <if test="projectIds == null or projectIds.size() == 0">
+            AND 1 = 0
+        </if>
+        GROUP BY t.level
+        ORDER BY t.level
+    </select>
+
+    <!-- 保留原来的单个ID方法 -->
+    <select id="getOverviewByProjectId" resultType="com.example.demo.api.tb.domain.dto.TaskStaticsDTO">
+        SELECT COUNT(*)                                                 as totalTasks,
+               SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END)            as completedTasks,
+               COUNT(*) - SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as inProgressTasks
+        FROM task
+        WHERE project_id = #{projectId}
+          AND is_deleted = '0'
+    </select>
+    <select id="getAllMembersByProjectIds" resultType="java.util.Map">
+        SELECT
+        su.id as userId,
+        su.user_name as userName
+        FROM sys_user su
+        WHERE su.id IN (
+        SELECT DISTINCT user_id FROM (
+        SELECT assignee as user_id FROM task WHERE assignee IS NOT NULL and is_deleted = 0
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        UNION
+        SELECT assigner as user_id FROM task WHERE assigner IS NOT NULL AND is_deleted = 0
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        ) members
+        WHERE user_id IS NOT NULL
+        )
+        AND su.status = 0
+        AND su.del_flag = 0
+        ORDER BY su.id
+    </select>
+
+    <select id="getOverviewByProjectIdsAndUserId" resultType="com.example.demo.api.tb.domain.dto.TaskStaticsDTO">
+        SELECT
+        COUNT(*) as totalTasks,
+        SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as completedTasks,
+        COUNT(*) - SUM(CASE WHEN status = '3' THEN 1 ELSE 0 END) as inProgressTasks
+        FROM task
+        WHERE is_deleted = '0'
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        <if test="projectIds == null or projectIds.size() == 0">
+            AND 1 = 0  <!-- 如果没有项目ID，返回空 -->
+        </if>
+        and (assigner = #{userId} or assignee = #{userId})
+    </select>
+
+    <select id="getMemberTaskInfosAndUserId" resultType="com.example.demo.api.tb.domain.dto.MemberTaskDTO">
+        SELECT
+        task_title as taskTitle, status,priority
+        FROM task
+        WHERE is_deleted = '0'
+        <if test="projectIds != null and projectIds.size() > 0">
+            AND project_id IN
+            <foreach collection="projectIds" item="projectId" open="(" separator="," close=")">
+                #{projectId}
+            </foreach>
+        </if>
+        <if test="projectIds == null or projectIds.size() == 0">
+            AND 1 = 0  <!-- 如果没有项目ID，返回空 -->
+        </if>
+        and (assigner = #{userId} or assignee = #{userId})
+        order by id desc limit 10;
+    </select>
+    <select id="getStats" resultType="com.example.demo.api.tb.domain.vo.Dashboard.Stats">
+        SELECT
+        COALESCE( SUM(CASE WHEN t.status = '1' THEN 1 ELSE 0 END)) AS pending,
+        COALESCE( SUM(CASE WHEN t.status = '2' THEN 1 ELSE 0 END)) AS inProgress,
+        COALESCE( SUM(CASE WHEN t.status = '3' THEN 1 ELSE 0 END)) AS completed,
+        COALESCE( SUM(CASE WHEN t.status = '4' THEN 1 ELSE 0 END)) AS canceled,
+        COALESCE( SUM(CASE WHEN t.status = '5' THEN 1 ELSE 0 END)) AS blocked,
+        COALESCE( SUM(CASE
+        WHEN t.due_date IS NOT NULL
+        AND NOW() &gt; t.due_date
+        AND t.status NOT IN ('3', '4')
+        THEN 1
+        ELSE 0
+        END)) AS overdue
+        FROM task t
+        LEFT JOIN project p ON t.project_id = p.id
+        WHERE t.is_deleted = '0'
+
+        <if test="startTime != null and startTime != ''">
+            AND t.due_date &gt;= #{startTime}
+        </if>
+        <if test="dueTime != null and dueTime != ''">
+            AND t.start_time &lt;= #{dueTime}
+        </if>
+        <!-- 3. 权限控制：分角色处理 -->
+        <if test="loginIdAsString != null and loginIdAsString != ''">
+            <!--            &lt;!&ndash; 情况一：如果是项目所有者，可查自己项目及任意子项目 &ndash;&gt;-->
+            <!--            <if test="isOwner == true and projectId != null and projectId != '' ">-->
+
+            <!--                AND t.project_id in-->
+            <!--                (-->
+            <!--                &#45;&#45; 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）-->
+            <!--                WITH RECURSIVE project_tree AS (-->
+            <!--                &#45;&#45; 基础查询：当前用户拥有的直属项目-->
+            <!--                SELECT id FROM project WHERE owner = #{loginIdAsString} and id= #{projectId}-->
+            <!--                UNION ALL-->
+            <!--                &#45;&#45; 递归部分：查找子项目-->
+            <!--                SELECT p.id FROM project p-->
+            <!--                INNER JOIN project_tree pt ON p.parent_id = pt.id-->
+            <!--                )-->
+            <!--                &#45;&#45; 2. 检查任务项目是否在该树中-->
+            <!--                SELECT * FROM project_tree)-->
+            <!--            </if>-->
+
+            <!-- 情况二：普通用户，只查 assignee / assigner 是自己的任务              <if test="isOwner == false">  -->
+
+            <if test="isOwner == false or isOwner == true ">
+                AND t.project_id in
+                (
+                -- 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）
+                WITH RECURSIVE project_tree AS (
+                -- 基础查询：当前用户拥有的直属项目
+                SELECT id FROM project WHERE id= #{projectId}
+                UNION ALL
+                -- 递归部分：查找子项目
+                SELECT p.id FROM project p
+                INNER JOIN project_tree pt ON p.parent_id = pt.id
+                )
+                -- 2. 检查任务项目是否在该树中
+                SELECT * FROM project_tree)
+
+                <if test="isSuperAdmin == false">
+                    AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})
+                </if>
+            </if>
+        </if>
+        <!--        <if test="loginIdAsString != null and loginIdAsString != ''">-->
+        <!--            AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})-->
+        <!--        </if>-->
+    </select>
+    <select id="getCompleteTrend" resultType="com.example.demo.api.tb.domain.vo.Dashboard.Trend">
+
+        SELECT
+        DATE(t.actual_finish_time) AS date,
+        COUNT(*) AS count
+        FROM task t
+        WHERE t.is_deleted = '0'
+        AND t.status = '3' -- 已完成
+        AND t.actual_finish_time IS NOT NULL
+        <!-- 项目筛选 -->
+<!--        <if test="projectId != null and projectId != ''">-->
+<!--            AND t.project_id = #{projectId}-->
+<!--        </if>-->
+        <!-- 时间范围筛选 -->
+        <if test="startTime != null and startTime != ''">
+            AND t.actual_finish_time &gt;= #{startTime}
+        </if>
+        <if test="dueTime != null and dueTime != ''">
+            AND t.actual_finish_time &lt;= #{dueTime}
+        </if>
+        <!-- 3. 权限控制：分角色处理 -->
+        <if test="loginIdAsString != null and loginIdAsString != ''">
+<!--            &lt;!&ndash; 情况一：如果是项目所有者，可查自己项目及任意子项目 &ndash;&gt;-->
+<!--            <if test="isOwner == true and projectId != null and projectId != '' ">-->
+
+<!--                AND t.project_id in-->
+<!--                (-->
+<!--                &#45;&#45; 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）-->
+<!--                WITH RECURSIVE project_tree AS (-->
+<!--                &#45;&#45; 基础查询：当前用户拥有的直属项目-->
+<!--                SELECT id FROM project WHERE owner = #{loginIdAsString} and id= #{projectId}-->
+<!--                UNION ALL-->
+<!--                &#45;&#45; 递归部分：查找子项目-->
+<!--                SELECT p.id FROM project p-->
+<!--                INNER JOIN project_tree pt ON p.parent_id = pt.id-->
+<!--                )-->
+<!--                &#45;&#45; 2. 检查任务项目是否在该树中-->
+<!--                SELECT * FROM project_tree)-->
+<!--            </if>-->
+
+            <!-- 情况二：普通用户，只查 assignee / assigner 是自己的任务              <if test="isOwner == false">  -->
+
+            <if test="isOwner == false or isOwner == true ">
+                AND t.project_id in
+                (
+                -- 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）
+                WITH RECURSIVE project_tree AS (
+                -- 基础查询：当前用户拥有的直属项目
+                SELECT id FROM project WHERE  id= #{projectId}
+                UNION ALL
+                -- 递归部分：查找子项目
+                SELECT p.id FROM project p
+                INNER JOIN project_tree pt ON p.parent_id = pt.id
+                )
+                -- 2. 检查任务项目是否在该树中
+                SELECT * FROM project_tree)
+                <if test="isSuperAdmin == false">
+                    AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})
+                </if>
+            </if>
+        </if>
+        <!--        &lt;!&ndash; 权限控制：只查自己是 assignee 或 assigner 的任务 &ndash;&gt;-->
+        <!--        <if test="loginIdAsString != null and loginIdAsString != ''">-->
+        <!--            AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})-->
+        <!--        </if>-->
+        GROUP BY DATE(t.actual_finish_time)
+        ORDER BY date ASC
+    </select>
+    <select id="getCreateTrend" resultType="com.example.demo.api.tb.domain.vo.Dashboard.Trend">
+        SELECT
+        DATE(t.create_time) AS date,
+        COUNT(*) AS count
+        FROM task t
+        WHERE t.is_deleted = '0'
+        <!-- 时间范围筛选 -->
+        <if test="startTime != null and startTime != ''">
+            AND t.create_time &gt;= #{startTime}
+        </if>
+        <if test="dueTime != null and dueTime != ''">
+            AND t.create_time &lt;= #{dueTime}
+        </if>
+        <!-- 3. 权限控制：分角色处理 -->
+        <if test="loginIdAsString != null and loginIdAsString != ''">
+            <!-- 情况一：如果是项目所有者，可查自己项目及任意子项目 -->
+            <!--            <if test="isOwner == true and projectId != null and projectId != '' ">-->
+
+            <!--                AND t.project_id in-->
+            <!--                (-->
+            <!--                &#45;&#45; 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）-->
+            <!--                WITH RECURSIVE project_tree AS (-->
+            <!--                &#45;&#45; 基础查询：当前用户拥有的直属项目-->
+            <!--                SELECT id FROM project WHERE owner = #{loginIdAsString} and id= #{projectId}-->
+            <!--                UNION ALL-->
+            <!--                &#45;&#45; 递归部分：查找子项目-->
+            <!--                SELECT p.id FROM project p-->
+            <!--                INNER JOIN project_tree pt ON p.parent_id = pt.id-->
+            <!--                )-->
+            <!--                &#45;&#45; 2. 检查任务项目是否在该树中-->
+            <!--                SELECT * FROM project_tree)-->
+            <!--            </if>-->
+
+            <!-- 情况二：普通用户，只查 assignee / assigner 是自己的任务              <if test="isOwner == false">  -->
+
+            <if test="isOwner == false or isOwner == true ">
+                AND t.project_id in
+                (
+                -- 1. 递归查询：获取当前用户拥有的所有项目（包括子项目）
+                WITH RECURSIVE project_tree AS (
+                -- 基础查询：当前用户拥有的直属项目
+                SELECT id FROM project WHERE  id= #{projectId}
+                UNION ALL
+                -- 递归部分：查找子项目
+                SELECT p.id FROM project p
+                INNER JOIN project_tree pt ON p.parent_id = pt.id
+                )
+                -- 2. 检查任务项目是否在该树中
+                SELECT * FROM project_tree)
+                <if test="isSuperAdmin == false">
+                    AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})
+                </if>
+            </if>
+        </if>
+        <!--        &lt;!&ndash; 权限控制：只查自己是 assignee 或 assigner 的任务 &ndash;&gt;-->
+        <!--        <if test="loginIdAsString != null and loginIdAsString != ''">-->
+        <!--            AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})-->
+        <!--        </if>-->
+        GROUP BY DATE(t.create_time)
+        ORDER BY date ASC
+    </select>
+
+
+
+
+
+    <select id="getDailyWorkHours" resultType="com.example.demo.api.tb.domain.vo.Dashboard.WorkHours">
+
+        WITH RECURSIVE date_range AS (
+        SELECT DATE(start_time) AS dt
+        FROM task
+        WHERE is_deleted = '0'
+        AND id IN
+        <foreach collection="taskIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        GROUP BY DATE(start_time) -- ✅ 使用 GROUP BY 替代 DISTINCT
+
+        UNION ALL
+
+        SELECT DATE_ADD(dt, INTERVAL 1 DAY)
+        FROM date_range
+        WHERE dt &lt; (
+        SELECT MAX(DATE(due_date))
+        FROM task
+        WHERE is_deleted = '0'
+        AND id IN
+        <foreach collection="taskIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        )
+        ),
+        task_daily_hours AS (
+        SELECT
+        t.id,
+        DATE(t.start_time) AS start_day,
+        DATE(t.due_date) AS end_day,
+        t.estimated_hours,
+        DATEDIFF(t.due_date, t.start_time) + 1 AS total_days,
+        t.estimated_hours / (DATEDIFF(t.due_date, t.start_time) + 1) AS daily_hours
+        FROM task t
+        WHERE is_deleted = '0'
+        AND id IN
+        <foreach collection="taskIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        ),
+        daily_distribution AS (
+        SELECT
+        tdh.id,
+        tdh.daily_hours,
+        dr.dt AS daily_date
+        FROM task_daily_hours tdh
+        CROSS JOIN date_range dr
+        WHERE dr.dt >= tdh.start_day
+        AND dr.dt &lt;= tdh.end_day
+        )
+        SELECT
+        dd.daily_date AS DATE,
+        ROUND(SUM(dd.daily_hours), 2) AS hours
+        FROM daily_distribution dd
+        GROUP BY dd.daily_date
+        ORDER BY dd.daily_date;
+
+    </select>
+    <select id="getAllTasksIdsByloginId" resultType="com.example.demo.api.tb.domain.Task">
+
+        SELECT t.*
+        FROM task t
+        WHERE t.is_deleted = '0'
+        <if test="startTime != null and startTime != ''">
+            AND t.due_date &gt;= #{startTime}
+        </if>
+        <if test="dueTime != null and dueTime != ''">
+            AND t.start_time &lt;= #{dueTime}
+        </if>
+        <!-- 3. 权限控制 -->
+        <if test="loginIdAsString != null and loginIdAsString != ''">
+            AND EXISTS (
+            WITH RECURSIVE project_tree AS (
+            SELECT id FROM project WHERE id = #{projectId}
+            UNION ALL
+            SELECT p.id FROM project p
+            INNER JOIN project_tree pt ON p.parent_id = pt.id
+            )
+            SELECT 1 FROM project_tree pt
+            WHERE pt.id = t.project_id
+            )
+            <if test="isSuperAdmin == false">
+                AND (t.assignee = #{loginIdAsString} OR t.assigner = #{loginIdAsString})
+            </if>
+        </if>
+    </select>
+
+
+</mapper>

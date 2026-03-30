@@ -1,0 +1,25 @@
+package com.example.demo.api.tb.service;
+
+import com.example.demo.api.tb.domain.Roles;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.demo.api.tb.domain.dto.RolesDTO;
+
+import java.util.List;
+
+/**
+* @author ji156
+* @description 针对表【roles(角色信息表)】的数据库操作Service
+* @createDate 2025-02-10 17:00:35
+*/
+public interface RolesService extends IService<Roles> {
+
+    List<Roles> queryProjectRoles( Long projectId);
+
+    void saveRoles(RolesDTO rolesDto);
+
+    /**
+     * 根据userId,projectId查询角色id
+     * @param rolesDto
+     */
+    Roles queryRoleByuserIdAndprojectId(RolesDTO rolesDto);
+}

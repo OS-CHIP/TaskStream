@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.UpdateLogMapper">
+
+
+    <select id="selectPageByCondition" resultType="com.example.demo.api.tb.domain.UpdateLog">
+        SELECT *
+        FROM update_log
+        <where>
+            <if test="tableName != null and tableName != ''">
+                AND table_name = #{tableName}
+            </if>
+            <if test="recordId != null">
+                AND record_id  = #{recordId}
+            </if>
+            <if test="operationType != null and operationType != ''">
+                AND operation_type = #{operationType}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                AND create_by = #{createBy}
+            </if>
+            <if test="startTime != null">
+                AND create_time >= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND create_time &lt;= #{endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+</mapper>

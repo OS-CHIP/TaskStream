@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.MsgUserNoticeMapper">
+
+
+    <insert id="insertBatchSomeColumn">
+        INSERT INTO msg_user_notice (user_id, notice_id, title, content) VALUES
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.userId}, #{item.noticeId}, #{item.title}, #{item.content})
+        </foreach>
+    </insert>
+
+
+    <select id="selectPageByUserId" resultType="com.example.demo.api.tb.domain.vo.UserNoticeVO">
+        SELECT
+        id,
+        title,
+        content AS summary,
+        is_read AS isRead,
+        create_time AS createTime
+        FROM msg_user_notice
+        WHERE user_id = #{userId}
+        <if test="isRead != null">
+            AND is_read = #{isRead}
+        </if>
+        ORDER BY create_time DESC
+        LIMIT #{offset}, #{size}
+    </select>
+</mapper>

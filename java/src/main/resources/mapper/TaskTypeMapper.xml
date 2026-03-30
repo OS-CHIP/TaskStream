@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.TaskTypeMapper">
+
+
+<!--    <insert id="saveTaskTypeTemplate">-->
+<!--        INSERT INTO task_fields (task_type_id, name,type,label,is_required,options,sort,is_select)-->
+<!--        VALUES-->
+<!--        <foreach collection="taskFields" item="item" index="index" separator=",">-->
+<!--            (-->
+<!--            #{item.taskTypeId}, #{item.name},#{item.type},#{item.label},#{item.isRequired},#{item.options},#{item.sort},#{item.isSelect}-->
+<!--            )-->
+<!--        </foreach>-->
+<!--    </insert>-->
+</mapper>

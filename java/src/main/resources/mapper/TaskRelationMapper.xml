@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.TaskRelationMapper">
+
+
+    <select id="selectAllRelatedRelations" resultType="com.example.demo.api.tb.domain.TaskRelation">
+        WITH RECURSIVE
+            ancestors AS (
+                SELECT id FROM task WHERE id = #{taskId} AND is_deleted = '0'
+                UNION ALL
+                SELECT t.id FROM task t
+                                     INNER JOIN task_relation tr ON t.id = tr.parent_task_id
+                                     INNER JOIN ancestors a ON tr.child_task_id = a.id
+                WHERE tr.is_deleted = '0' AND t.is_deleted = '0'
+            ),
+            descendants AS (
+                SELECT id FROM task WHERE id = #{taskId} AND is_deleted = '0'
+                UNION ALL
+                SELECT t.id FROM task t
+                                     INNER JOIN task_relation tr ON t.id = tr.child_task_id
+                                     INNER JOIN descendants d ON tr.parent_task_id = d.id
+                WHERE tr.is_deleted = '0' AND t.is_deleted = '0'
+            ),
+            all_task_ids AS (
+                SELECT id FROM ancestors
+                UNION
+                SELECT id FROM descendants
+            )
+        SELECT tr.*
+        FROM task_relation tr
+                 INNER JOIN all_task_ids p ON tr.parent_task_id = p.id
+                 INNER JOIN all_task_ids c ON tr.child_task_id = c.id
+        WHERE tr.is_deleted = '0'
+
+
+
+
+    </select>
+    <select id="selectAllRelatedTasks" resultType="com.example.demo.api.tb.domain.Task">
+
+        WITH RECURSIVE
+            ancestors AS (
+                SELECT * FROM task WHERE id = #{taskId} AND is_deleted = '0'
+                UNION ALL
+                SELECT t.* FROM task t
+                                    INNER JOIN task_relation tr ON t.id = tr.parent_task_id
+                                    INNER JOIN ancestors a ON tr.child_task_id = a.id
+                WHERE tr.is_deleted = '0' AND t.is_deleted = '0'
+            ),
+            descendants AS (
+                SELECT * FROM task WHERE id = #{taskId} AND is_deleted = '0'
+                UNION ALL
+                SELECT t.* FROM task t
+                                    INNER JOIN task_relation tr ON t.id = tr.child_task_id
+                                    INNER JOIN descendants d ON tr.parent_task_id = d.id
+                WHERE tr.is_deleted = '0' AND t.is_deleted = '0'
+            )
+        SELECT * FROM (
+                          SELECT * FROM ancestors
+                          UNION
+                          SELECT * FROM descendants
+                      ) AS all_tasks
+    </select>
+    <select id="selectRelationsWithinTasks" resultType="com.example.demo.api.tb.domain.TaskRelation">
+        SELECT id, parent_task_id, child_task_id, relation_type
+        FROM task_relation
+        WHERE is_deleted = '0'
+        AND parent_task_id IN
+        <foreach collection="taskIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        AND child_task_id IN
+        <foreach collection="taskIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+
+    </select>
+    <select id="isLeafNode" resultType="java.lang.Boolean">
+
+        SELECT EXISTS (SELECT 1
+                       FROM task_relation
+                       WHERE is_deleted = '0'
+                         AND parent_task_id = #{taskId})
+    </select>
+    <select id="findDescendants" resultType="java.lang.Long">
+        -- 使用递归 CTE 或存储过程，MySQL 8.0+ 支持
+        WITH RECURSIVE descendants AS (
+            SELECT child_task_id FROM task_relation WHERE parent_task_id = #{ancestorId} AND is_deleted = '0'
+            UNION ALL
+            SELECT tr.child_task_id FROM task_relation tr
+                                             INNER JOIN descendants d ON tr.parent_task_id = d.child_task_id
+            WHERE tr.is_deleted = '0'
+        )
+        SELECT child_task_id FROM descendants;
+
+    </select>
+
+</mapper>

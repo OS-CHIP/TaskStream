@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.FieldValuesMapper">
+
+
+    <insert id="saveFieldValuesList">
+        INSERT INTO field_values (tasks_id , field_id, value)
+        VALUES
+        <foreach collection="fieldValuesList" item="item" index="index" separator=",">
+            (
+            #{item.tasksId}, #{item.fieldId}, #{item.value}
+            )
+        </foreach>
+
+
+    </insert>
+</mapper>

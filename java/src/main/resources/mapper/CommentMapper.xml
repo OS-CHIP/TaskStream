@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.CommentMapper">
+
+
+    <select id="getAllTasksWithLevel" resultType="com.example.demo.api.tb.domain.vo.CommentVO">
+
+        WITH RECURSIVE comment_tree AS (SELECT id,
+        task_id,
+        parent_id,
+        content,
+        create_time,
+        create_by,
+        0 AS LEVEL,
+        CAST(
+        id AS CHAR(200)) AS path
+        FROM `comment`
+
+        <where>
+            parent_id = 0
+            <if test="taskId != null">
+                AND task_id = #{taskId}
+            </if>
+        </where>
+        UNION ALL
+        SELECT c.id,
+        c.task_id,
+        c.parent_id,
+        c.content,
+        c.create_time,
+        c.create_by,
+        ct.LEVEL + 1,
+        CONCAT(ct.path, ',', c.id) AS path
+        FROM `comment` c
+        INNER JOIN comment_tree ct ON c.parent_id = ct.id)
+        SELECT id,
+        task_id,
+        parent_id,
+        content,
+        create_time,
+        create_by,
+        LEVEL,
+        path
+        FROM comment_tree
+        ORDER BY LEVEL, parent_id, create_time
+
+    </select>
+
+</mapper>

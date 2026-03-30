@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.MsgEventRemindMapper">
+
+
+    <select id="selectPageByUserId" resultType="com.example.demo.api.tb.domain.vo.UserNoticeVO">
+
+        SELECT
+        r.id,
+        CONCAT(u.user_name,
+        CASE r.event_type
+        WHEN 1 THEN '点赞了你的内容'
+        WHEN 2 THEN '评论了你的内容'
+        WHEN 3 THEN '关注了你'
+        WHEN 4 THEN '转发了你的内容'
+        WHEN 5 THEN '@了你'
+        ELSE ''
+        END
+        ) AS title,
+        r.summary,
+        r.jump_url AS jumpUrl,
+        r.is_read AS isRead,
+        r.create_time AS createTime
+        FROM msg_event_remind r
+        LEFT JOIN sys_user u ON r.sender_id = u.id
+        WHERE r.user_id = #{userId}
+        <if test="isRead != null">
+            AND r.is_read = #{isRead}
+        </if>
+        ORDER BY r.create_time DESC
+        LIMIT #{offset}, #{size}
+
+    </select>
+    <select id="selectRemindById" resultType="com.example.demo.api.tb.domain.vo.UserNoticeVO">
+        SELECT r.id,
+               CONCAT(u.user_name,
+                      CASE r.event_type
+                          WHEN 1 THEN '点赞了你的内容'
+                          WHEN 2 THEN '评论了你的内容'
+                          WHEN 3 THEN '关注了你'
+                          WHEN 4 THEN '转发了你的内容'
+                          WHEN 5 THEN '@了你'
+                          ELSE ''
+                          END
+               )             AS title,
+               r.summary,
+               r.jump_url    AS jumpUrl,
+               r.is_read     AS isRead,
+               r.create_time AS createTime
+        FROM msg_event_remind r
+                 LEFT JOIN sys_user u ON r.sender_id = u.id
+        WHERE r.id = #{id}
+
+    </select>
+
+</mapper>

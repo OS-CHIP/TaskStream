@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.PermissionMapper">
+
+
+    <select id="queryPermissionListByRoleId" resultType="com.example.demo.api.tb.domain.Permission">
+        select
+        p.*
+        from permission p
+        left join permission_relation pr on p.id = pr.permission_id
+        <where>
+        <if test="roleId != null">
+            and pr.role_id = #{roleId}
+        </if>
+        </where>
+
+    </select>
+    <select id="getRoleList" resultType="java.lang.String">
+        SELECT r.role_key
+        FROM roles r
+                 LEFT JOIN role_user ru on r.role_id = ru.role_id
+        WHERE ru.user_id = #{loginId}
+        GROUP BY r.role_key
+    </select>
+</mapper>

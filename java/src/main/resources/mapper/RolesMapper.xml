@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.api.tb.mapper.RolesMapper">
+
+
+    <select id="queryProjectRoles" resultType="com.example.demo.api.tb.domain.Roles">
+        select r.role_id , r.role_name from roles r
+        left join project_role pr on r.role_id = pr.role_id
+        <where>
+            <if test="projectId != null and projectId != 0L">
+                and pr.project_id = #{projectId}
+            </if>
+        </where>
+    </select>
+    <select id="queryRoleByuserIdAndprojectId" resultType="com.example.demo.api.tb.domain.Roles">
+        select r.* from roles r
+        left join user_role ur on r.role_id = ur.role_id
+        left join project_role pr on r.role_id = pr.role_id
+        <where>
+            <if test="userId!= null and projectId!= null">
+                and ur.user_id = #{userId}
+            </if>
+            <if test="projectId != null and projectId != 0L">
+                and pr.project_id = #{projectId}
+            </if>
+        </where>
+    </select>
+</mapper>
