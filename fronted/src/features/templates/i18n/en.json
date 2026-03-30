@@ -1,0 +1,64 @@
+{
+  "list": {
+    "title": "Task Type Management",
+    "description": "Manage task types in the project, define properties and behaviors",
+    "create": "New Task Type",
+    "searchPlaceholder": "Search task types...",
+    "empty": "No task types",
+    "noMatch": "No matching task types",
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    },
+    "actions": {
+      "edit": "Edit",
+      "configTemplate": "Configure Template",
+      "delete": "Delete"
+    },
+    "deleteDialog": {
+      "title": "Delete Task Type",
+      "desc": "Are you sure to delete task type \"{{name}}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel",
+      "success": "Task type \"{{name}}\" deleted"
+    }
+  },
+  "form": {
+    "createTitle": "Create Task Type",
+    "editTitle": "Edit Task Type",
+    "createDesc": "Create a new task type to categorize tasks",
+    "editDesc": "Modify task type information",
+    "error": {
+      "nameRequired": "Task type name cannot be empty",
+      "selectProject": "Please select a project first",
+      "updateFailed": "Failed to update task type",
+      "createFailed": "Failed to create task type"
+    },
+    "fields": {
+      "name": "Task Type Name *",
+      "namePlaceholder": "Enter task type name",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter task type description (optional)",
+      "isHidden": "Hidden (shows as disabled in the list)"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "update": "Update",
+      "create": "Create"
+    }
+  },
+  "detail": {
+    "loading": "Loading template details...",
+    "notFound": "Template not found, please return to task type list.",
+    "back": "Back",
+    "namePrefix": "Task Type",
+    "templateSuffix": "Template"
+  }
+}

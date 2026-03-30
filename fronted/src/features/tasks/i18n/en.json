@@ -1,0 +1,139 @@
+{
+  "detail": {
+    "loading": "Loading task details...",
+    "notFound": "Task not found or has been deleted",
+    "tabs": {
+      "basic": "Basic Info",
+      "timeline": "Timeline",
+      "comments": "Comments"
+    },
+    "description": {
+      "title": "Task Description",
+      "empty": "No task description"
+    },
+    "parentTasks": {
+      "title": "Parent Tasks",
+      "empty": "No parent tasks",
+      "assigneeLabel": "Assignee",
+      "dueLabel": "Due"
+    },
+    "subtasks": {
+      "title": "Subtasks",
+      "empty": "No subtasks",
+      "progress": "Progress"
+    },
+    "attachments": {
+      "title": "Attachments ({{count}})",
+      "empty": "No attachments",
+      "imageBadge": "Image"
+    },
+    "timeline": {
+      "title": "Task Timeline",
+      "badge": "{{count}} record(s)",
+      "loading": "Loading...",
+      "loadMore": "Load More",
+      "noMore": "No more data",
+      "empty": "No timeline records",
+      "fieldLabel": "Field",
+      "changedBy": "Changed by",
+      "updatedTo": "Updated to: {{value}}",
+      "fields": {
+        "priority": "Priority",
+        "status": "Status",
+        "title": "Title",
+        "description": "Description",
+        "assignee": "Assignee",
+        "dueDate": "Due Date",
+        "estimatedHours": "Estimated Hours",
+        "actualHours": "Actual Hours",
+        "type": "Task Type",
+        "parentId": "Parent Task"
+      },
+      "user": {
+        "system": "System",
+        "unknown": "Unknown User"
+      }
+    },
+    "comments": {
+      "title": "Comments ({{count}})",
+      "loading": "Loading comments...",
+      "list": "Comments",
+      "refreshTitle": "Refresh comments",
+      "empty": "No comments yet, be the first!",
+      "replyAction": "Reply",
+      "replyTo": "Reply",
+      "edited": "Edited",
+      "replyPlaceholder": "Reply...",
+      "replySubmit": "Reply",
+      "form": {
+        "write": "Write",
+        "preview": "Preview",
+        "previewEmpty": "No content preview",
+        "tips": "Supports Markdown. Use @ to mention members, # to mention tasks",
+        "submit": "Post Comment",
+        "placeholder": "Add a comment..."
+      },
+      "toast": {
+        "publishSuccess": "Comment posted successfully",
+        "publishFailed": "Failed to post comment",
+        "replySuccess": "Reply posted successfully",
+        "replyFailed": "Failed to post reply",
+        "insertedTask": "Inserted task link: {{title}}",
+        "mentionedUser": "Mentioned member: {{name}}",
+        "insertImages": "Inserted {{count}} image(s)",
+        "uploadFailed": "Image upload failed",
+        "uploadFailedRetry": "Image upload failed, please retry",
+        "imageTooLarge": "Image size cannot exceed 10MB"
+      }
+    },
+    "toast": {
+      "statusUpdated": "Task status updated successfully",
+      "statusUpdateFailed": "Failed to update task status",
+      "priorityUpdated": "Task priority updated successfully",
+      "priorityUpdateFailed": "Failed to update task priority"
+    },
+    "header": {
+      "updating": "Updating...",
+      "transfer": "Transfer"
+    },
+    "transferDialog": {
+      "title": "Transfer to other member",
+      "selectMember": "Select Member",
+      "placeholderLoading": "Loading...",
+      "placeholderSelect": "Please select a member",
+      "reasonLabel": "Transfer Reason *",
+      "reasonPlaceholder": "Please enter transfer reason...",
+      "cancel": "Cancel",
+      "confirm": "Confirm Transfer",
+      "transferring": "Transferring..."
+    },
+    "transferToast": {
+      "projectIdMissing": "Project ID not found",
+      "membersLoadFailed": "Failed to load project members",
+      "fail": "Transfer failed",
+      "failRetry": "Transfer failed, please retry",
+      "success": "Transfer succeeded"
+    },
+    "basicInfo": {
+      "title": "Basic Info",
+      "creator": "Creator",
+      "owner": "Owner",
+      "assigner": "Assigner",
+      "assignee": "Assignee",
+      "estimatedHours": "Estimated Hours",
+      "createdAt": "Created At",
+      "startTime": "Start Time",
+      "dueDate": "Due Date",
+      "parentTask": "Parent Task",
+      "taskType": "Task Type",
+      "updatedAt": "Updated At",
+      "unknownTime": "Unknown Time",
+      "hoursUnit": "hours"
+    }
+  }
+  ,
+  "create": {
+    "observers": "Observers",
+    "observersPlaceholder": "Select observers (multi-select)"
+  }
+}

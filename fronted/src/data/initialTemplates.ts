@@ -1,0 +1,162 @@
+import { Template } from '@/types/templates'
+
+export const initialTemplates: Template[] = [
+  {
+    id: 'requirement-template',
+    name: '需求模板',
+    type: 'requirement',
+    description: '用于创建新需求的模板',
+    fields: [
+      { id: 'requirement-title', name: '需求标题', type: 'text', required: true },
+      { id: 'requirement-description', name: '需求描述', type: 'textarea', required: true },
+      {
+        id: 'requirement-priority',
+        name: '优先级',
+        type: 'select',
+        required: true,
+        options: [
+          { label: '高', value: '高' },
+          { label: '中', value: '中' },
+          { label: '低', value: '低' },
+        ],
+      },
+      { id: 'requirement-estimated-hours', name: '预计工时', type: 'number', required: false },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'development-task-template',
+    name: '开发任务',
+    type: 'task',
+    description: '用于创建任务的模板',
+    fields: [
+      { id: 'task-name', name: '任务名称', type: 'text', required: true },
+      {
+        id: 'task-description',
+        name: '任务描述',
+        type: 'markdown',
+        required: true,
+        markdownConfig: {
+          height: 300,
+          preview: 'edit',
+          visibleDragbar: false,
+        },
+      },
+      {
+        id: 'task-priority',
+        name: '优先级',
+        type: 'select',
+        required: true,
+        options: [
+          { label: '高', value: '高' },
+          { label: '中', value: '中' },
+          { label: '低', value: '低' },
+        ],
+      },
+      {
+        id: 'task-assignee',
+        name: '负责人',
+        type: 'select',
+        required: true,
+        options: [
+          { label: 'John Doe', value: 'John Doe' },
+          { label: 'Jane Smith', value: 'Jane Smith' },
+          { label: 'Mike Johnson', value: 'Mike Johnson' },
+          { label: 'Sarah Wilson', value: 'Sarah Wilson' },
+        ],
+      },
+
+      {
+        id: 'task-parent-task',
+        name: '关联父任务',
+        type: 'select',
+        required: true,
+        options: [
+          { label: 'User Management Module', value: 'User Management Module' },
+          { label: 'Permission System', value: 'Permission System' },
+          { label: 'Data Analysis', value: 'Data Analysis' },
+        ],
+      },
+      {
+        id: 'task-assigned-to',
+        name: '分配给',
+        type: 'select',
+        required: true,
+        options: [
+          { label: 'John Doe', value: 'John Doe' },
+          { label: 'Jane Smith', value: 'Jane Smith' },
+          { label: 'Mike Johnson', value: 'Mike Johnson' },
+          { label: 'Sarah Wilson', value: 'Sarah Wilson' },
+        ],
+      },
+      {
+        id: 'task-project-phase',
+        name: '项目阶段',
+        type: 'select',
+        required: true,
+        options: [
+          { label: 'Requirement Analysis', value: 'Requirement Analysis' },
+          { label: 'Design Phase', value: 'Design Phase' },
+          { label: 'Development Phase', value: 'Development Phase' },
+          { label: 'Testing Phase', value: 'Testing Phase' },
+          { label: 'Deployment', value: 'Deployment' },
+        ],
+      },
+      { id: 'task-due-date', name: '截止日期', type: 'date', required: true },
+      {
+        id: 'task-estimated-hours',
+        name: '预估工时',
+        type: 'number',
+        required: true,
+      },
+      {
+        id: 'task-attachments',
+        name: '附件',
+        type: 'textarea',
+        required: true,
+      },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'bug-report-template',
+    name: 'Bug模板',
+    type: 'bug',
+    description: '用于报告Bug的模板',
+    fields: [
+      { id: 'bug-title', name: 'Bug标题', type: 'text', required: true },
+      { id: 'bug-reproduction-steps', name: '重现步骤', type: 'textarea', required: true },
+      {
+        id: 'bug-severity',
+        name: '严重程度',
+        type: 'select',
+        required: true,
+        options: [
+          { label: '致命', value: '致命' },
+          { label: '严重', value: '严重' },
+          { label: '一般', value: '一般' },
+          { label: '轻微', value: '轻微' },
+        ],
+      },
+      { id: 'bug-affected-version', name: '影响版本', type: 'text', required: true },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'test-validation-template',
+    name: '测试验证模板',
+    type: 'test',
+    description: '用于测试验证的模板',
+    fields: [
+      { id: 'test-case-name', name: '测试用例', type: 'text', required: true },
+      { id: 'test-steps', name: '测试步骤', type: 'textarea', required: true },
+      { id: 'test-expected-result', name: '预期结果', type: 'textarea', required: true },
+      { id: 'test-actual-result', name: '实际结果', type: 'textarea', required: false },
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+]

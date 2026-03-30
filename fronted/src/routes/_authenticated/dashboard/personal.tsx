@@ -1,0 +1,1 @@
+export { PersonalStatsPage as default } from '@/features/dashboard'

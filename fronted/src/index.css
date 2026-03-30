@@ -1,0 +1,608 @@
+@import 'tailwindcss';
+
+/* Fallback for browsers that don't support modern CSS features */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+  }
+}
+
+:root {
+  --radius: 0.625rem;
+  /* RGB fallbacks for browsers without OKLCH/HSL */
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #1e293b;
+  --primary-foreground: #f8fafc;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #1e293b;
+  --destructive: #dc2626;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #94a3b8;
+  --chart-1: #f97316;
+  --chart-2: #06b6d4;
+  --chart-3: #3b82f6;
+  --chart-4: #84cc16;
+  --chart-5: #eab308;
+}
+
+/* Distinct color for user-entered text in inputs */
+:root {
+  --user-input-color: rgb(234, 88, 12);
+}
+
+/* Sidebar variable fallbacks for browsers without OKLCH support */
+:root {
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+
+.dark {
+  /* RGB fallbacks for dark theme */
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  --primary: #e2e8f0;
+  --primary-foreground: #1e293b;
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #334155;
+  --accent-foreground: #f8fafc;
+  --destructive: #ef4444;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #64748b;
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #ef4444;
+}
+
+.dark {
+  --user-input-color: rgb(255, 176, 67);
+}
+
+
+.blue {
+  /* RGB fallbacks for blue theme */
+  --background: #f8fafc;
+  --foreground: #1e293b;
+  --card: #ffffff;
+  --card-foreground: #1e293b;
+  --popover: #ffffff;
+  --popover-foreground: #1e293b;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #334155;
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+  --accent: #dbeafe;
+  --accent-foreground: #334155;
+  --destructive: #dc2626;
+  --border: #cbd5e1;
+  --input: #cbd5e1;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #06b6d4;
+  --chart-3: #6366f1;
+  --chart-4: #10b981;
+  --chart-5: #8b5cf6;
+}
+
+
+.green {
+  /* RGB fallbacks for green theme */
+  --background: #f0fdf4;
+  --foreground: #14532d;
+  --card: #ffffff;
+  --card-foreground: #14532d;
+  --popover: #ffffff;
+  --popover-foreground: #14532d;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: #dcfce7;
+  --secondary-foreground: #166534;
+  --muted: #dcfce7;
+  --muted-foreground: #4ade80;
+  --accent: #bbf7d0;
+  --accent-foreground: #166534;
+  --destructive: #dc2626;
+  --border: #bbf7d0;
+  --input: #bbf7d0;
+  --ring: #16a34a;
+  --chart-1: #16a34a;
+  --chart-2: #22c55e;
+  --chart-3: #15803d;
+  --chart-4: #84cc16;
+  --chart-5: #10b981;
+}
+
+
+.purple {
+  /* RGB fallbacks for purple theme */
+  --background: #faf5ff;
+  --foreground: #581c87;
+  --card: #ffffff;
+  --card-foreground: #581c87;
+  --popover: #ffffff;
+  --popover-foreground: #581c87;
+  --primary: #8b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #e9d5ff;
+  --secondary-foreground: #6b21a8;
+  --muted: #e9d5ff;
+  --muted-foreground: #a855f7;
+  --accent: #ddd6fe;
+  --accent-foreground: #6b21a8;
+  --destructive: #dc2626;
+  --border: #ddd6fe;
+  --input: #ddd6fe;
+  --ring: #8b5cf6;
+  --chart-1: #8b5cf6;
+  --chart-2: #a855f7;
+  --chart-3: #7c3aed;
+  --chart-4: #9333ea;
+  --chart-5: #c084fc;
+}
+
+
+.orange {
+  /* RGB fallbacks for orange theme */
+  --background: #fffbeb;
+  --foreground: #9a3412;
+  --card: #ffffff;
+  --card-foreground: #9a3412;
+  --popover: #ffffff;
+  --popover-foreground: #9a3412;
+  --primary: #ea580c;
+  --primary-foreground: #ffffff;
+  --secondary: #fed7aa;
+  --secondary-foreground: #c2410c;
+  --muted: #fed7aa;
+  --muted-foreground: #f97316;
+  --accent: #fde68a;
+  --accent-foreground: #c2410c;
+  --destructive: #dc2626;
+  --border: #fde68a;
+  --input: #fde68a;
+  --ring: #ea580c;
+  --chart-1: #ea580c;
+  --chart-2: #f97316;
+  --chart-3: #fb923c;
+  --chart-4: #fdba74;
+  --chart-5: #fed7aa;
+}
+
+
+@theme {
+  --font-inter: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-manrope: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    outline-color: var(--ring);
+    outline-width: 2px;
+    outline-offset: 2px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  html {
+    @apply overflow-x-hidden;
+  }
+  body {
+    @apply bg-background text-foreground min-h-screen w-full;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Prevent focus zoom on mobile devices */
+  @media screen and (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@layer base {
+  .create-task-container input[type='text'],
+  .create-task-container input[type='password'],
+  .create-task-container input[type='email'],
+  .create-task-container input[type='number'],
+  .create-task-container input[type='search'],
+  .create-task-container input[type='url'],
+  .create-task-container input[type='tel'],
+  .create-task-container input[type='date'],
+  .create-task-container input[type='time'],
+  .create-task-container input[type='datetime-local'],
+  .create-task-container input[type='month'],
+  .create-task-container input[type='week'],
+  .create-task-container textarea,
+  .create-task-container select {
+    color: var(--user-input-color);
+  }
+  .create-task-container [data-slot='input'],
+  .create-task-container [data-slot='textarea'],
+  .create-task-container [data-slot='select-trigger'],
+  .create-task-container [data-slot='form-control'],
+  .create-task-container [data-slot='popover-trigger'],
+  .create-task-container [data-slot='select-value'],
+  .create-task-container [data-slot='input-otp'],
+  .create-task-container [data-slot='input-otp-slot'],
+  .create-task-container [data-slot='command-input'],
+  .create-task-container [data-slot='radio-group'],
+  .create-task-container [data-slot='radio-group-item'],
+  .create-task-container [data-slot='tag-input'] {
+    color: var(--user-input-color);
+  }
+  .create-task-container button {
+    color: var(--user-input-color);
+  }
+  .create-task-container .user-input-display {
+    color: var(--user-input-color);
+  }
+  .create-task-container input::placeholder,
+  .create-task-container textarea::placeholder {
+    color: var(--muted-foreground);
+  }
+  .create-task-container select:disabled,
+  .create-task-container input:disabled,
+  .create-task-container textarea:disabled {
+    color: var(--muted-foreground);
+  }
+}
+
+/* Exclude markdown editor from global input color changes */
+.create-task-container .markdown-editor-container textarea,
+.create-task-container .markdown-editor-container input,
+.create-task-container .markdown-editor-container select,
+.create-task-container .markdown-editor-container [data-slot='input'],
+.create-task-container .markdown-editor-container [data-slot='textarea'],
+.create-task-container .markdown-editor-container [data-slot='select-trigger'] {
+  color: var(--foreground) !important;
+}
+
+/* Utility classes for compatibility */
+.container {
+  margin-inline: auto;
+  /* padding-inline: 2rem; */
+}
+
+.no-scrollbar {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}
+
+.scrollbar-thumb-border::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.faded-bottom {
+  position: relative;
+}
+
+.faded-bottom::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: none;
+  height: 8rem;
+  width: 100%;
+  background: linear-gradient(180deg, transparent 10%, var(--background) 70%);
+}
+
+@media (min-width: 768px) {
+  .faded-bottom::after {
+    display: block;
+  }
+}
+
+/* styles.css */
+.CollapsibleContent {
+  overflow: hidden;
+}
+.CollapsibleContent[data-state='open'] {
+  animation: slideDown 300ms ease-out;
+}
+.CollapsibleContent[data-state='closed'] {
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* Compatibility styles for older Chromium versions (109 and below) */
+/* Fallback styles for text colors and font weights */
+.text-red-600-fallback {
+  color: #dc2626 !important;
+}
+
+.text-gray-900-fallback {
+  color: #111827 !important;
+}
+
+.font-medium-fallback {
+  font-weight: 500 !important;
+}
+
+.font-bold-fallback {
+  font-weight: 700 !important;
+}
+
+/* Ensure Tailwind classes work in older browsers */
+@layer utilities {
+@supports not (color: oklch(0 0 0)) {
+  .text-red-600 {
+    color: #dc2626 !important;
+  }
+  
+  .text-gray-900 {
+    color: #111827 !important;
+  }
+  
+  .font-medium {
+    font-weight: 500 !important;
+  }
+  
+  .font-bold {
+    font-weight: 700 !important;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.25rem !important;
+  }
+  
+  .mt-1 {
+    margin-top: 0.25rem !important;
+  }
+  
+  .block {
+    display: block !important;
+  }
+}
+
+/* Compatibility palette fallbacks removed for build isolation */
+
+@supports not (color: oklch(0 0 0)) {
+  /* Primary variable transparency fallbacks for Chromium 109 */
+  .bg-primary\/5 { background-color: rgba(30, 41, 59, 0.05) !important; }
+  .bg-primary\/10 { background-color: rgba(30, 41, 59, 0.10) !important; }
+  .bg-primary\/50 { background-color: rgba(30, 41, 59, 0.50) !important; }
+  .bg-primary\/70 { background-color: rgba(30, 41, 59, 0.70) !important; }
+  .bg-primary\/85 { background-color: rgba(30, 41, 59, 0.85) !important; }
+  .bg-primary\/90 { background-color: rgba(30, 41, 59, 0.90) !important; }
+  /* hover/active fallbacks removed to avoid build parse issues */
+  .border-primary\/20 { border-color: rgba(30, 41, 59, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed to avoid build parse issues */
+  .border-primary\/50 { border-color: rgba(30, 41, 59, 0.50) !important; }
+  .ring-primary\/50 { --tw-ring-color: rgba(30, 41, 59, 0.50) !important; }
+  .text-primary-foreground\/75 { color: rgba(248, 250, 252, 0.75) !important; }
+
+  .blue .bg-primary\/5 { background-color: rgba(59, 130, 246, 0.05) !important; }
+  .blue .bg-primary\/10 { background-color: rgba(59, 130, 246, 0.10) !important; }
+  .blue .hover\:bg-primary\/20:hover { background-color: rgba(59, 130, 246, 0.20) !important; }
+  .blue .active\:bg-primary\/30:active { background-color: rgba(59, 130, 246, 0.30) !important; }
+  .blue .bg-primary\/50 { background-color: rgba(59, 130, 246, 0.50) !important; }
+  .blue .bg-primary\/70 { background-color: rgba(59, 130, 246, 0.70) !important; }
+  .blue .bg-primary\/85 { background-color: rgba(59, 130, 246, 0.85) !important; }
+  .blue .bg-primary\/90 { background-color: rgba(59, 130, 246, 0.90) !important; }
+  /* hover:bg-primary/90 fallback removed */
+  .blue .border-primary\/20 { border-color: rgba(59, 130, 246, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed */
+  .blue .border-primary\/50 { border-color: rgba(59, 130, 246, 0.50) !important; }
+  .blue .ring-primary\/50 { --tw-ring-color: rgba(59, 130, 246, 0.50) !important; }
+  .blue .text-primary-foreground\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+
+  .green .bg-primary\/5 { background-color: rgba(22, 163, 74, 0.05) !important; }
+  .green .bg-primary\/10 { background-color: rgba(22, 163, 74, 0.10) !important; }
+  /* hover:bg-primary/20 fallback removed */
+  .green .active\:bg-primary\/30:active { background-color: rgba(22, 163, 74, 0.30) !important; }
+  .green .bg-primary\/50 { background-color: rgba(22, 163, 74, 0.50) !important; }
+  .green .bg-primary\/70 { background-color: rgba(22, 163, 74, 0.70) !important; }
+  .green .bg-primary\/85 { background-color: rgba(22, 163, 74, 0.85) !important; }
+  .green .bg-primary\/90 { background-color: rgba(22, 163, 74, 0.90) !important; }
+  .green .hover\:bg-primary\/90:hover { background-color: rgba(22, 163, 74, 0.90) !important; }
+  .green .border-primary\/20 { border-color: rgba(22, 163, 74, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed */
+  .green .border-primary\/50 { border-color: rgba(22, 163, 74, 0.50) !important; }
+  .green .ring-primary\/50 { --tw-ring-color: rgba(22, 163, 74, 0.50) !important; }
+  .green .text-primary-foreground\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+
+  .purple .bg-primary\/5 { background-color: rgba(139, 92, 246, 0.05) !important; }
+  .purple .bg-primary\/10 { background-color: rgba(139, 92, 246, 0.10) !important; }
+  .purple .hover\:bg-primary\/20:hover { background-color: rgba(139, 92, 246, 0.20) !important; }
+  .purple .active\:bg-primary\/30:active { background-color: rgba(139, 92, 246, 0.30) !important; }
+  .purple .bg-primary\/50 { background-color: rgba(139, 92, 246, 0.50) !important; }
+  .purple .bg-primary\/70 { background-color: rgba(139, 92, 246, 0.70) !important; }
+  .purple .bg-primary\/85 { background-color: rgba(139, 92, 246, 0.85) !important; }
+  .purple .bg-primary\/90 { background-color: rgba(139, 92, 246, 0.90) !important; }
+  /* hover:bg-primary/90 fallback removed */
+  .purple .border-primary\/20 { border-color: rgba(139, 92, 246, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed */
+  .purple .border-primary\/50 { border-color: rgba(139, 92, 246, 0.50) !important; }
+  .purple .ring-primary\/50 { --tw-ring-color: rgba(139, 92, 246, 0.50) !important; }
+  .purple .text-primary-foreground\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+
+  .orange .bg-primary\/5 { background-color: rgba(234, 88, 12, 0.05) !important; }
+  .orange .bg-primary\/10 { background-color: rgba(234, 88, 12, 0.10) !important; }
+  /* hover:bg-primary/20 fallback removed */
+  .orange .active\:bg-primary\/30:active { background-color: rgba(234, 88, 12, 0.30) !important; }
+  .orange .bg-primary\/50 { background-color: rgba(234, 88, 12, 0.50) !important; }
+  .orange .bg-primary\/70 { background-color: rgba(234, 88, 12, 0.70) !important; }
+  .orange .bg-primary\/85 { background-color: rgba(234, 88, 12, 0.85) !important; }
+  .orange .bg-primary\/90 { background-color: rgba(234, 88, 12, 0.90) !important; }
+  /* hover:bg-primary/90 fallback removed */
+  .orange .border-primary\/20 { border-color: rgba(234, 88, 12, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed */
+  .orange .border-primary\/50 { border-color: rgba(234, 88, 12, 0.50) !important; }
+  .orange .ring-primary\/50 { --tw-ring-color: rgba(234, 88, 12, 0.50) !important; }
+  .orange .text-primary-foreground\/75 { color: rgba(255, 255, 255, 0.75) !important; }
+
+  .dark .bg-primary\/5 { background-color: rgba(226, 232, 240, 0.05) !important; }
+  .dark .bg-primary\/10 { background-color: rgba(226, 232, 240, 0.10) !important; }
+  /* hover:bg-primary/20 fallback removed */
+  .dark .active\:bg-primary\/30:active { background-color: rgba(226, 232, 240, 0.30) !important; }
+  .dark .bg-primary\/50 { background-color: rgba(226, 232, 240, 0.50) !important; }
+  .dark .bg-primary\/70 { background-color: rgba(226, 232, 240, 0.70) !important; }
+  .dark .bg-primary\/85 { background-color: rgba(226, 232, 240, 0.85) !important; }
+  .dark .bg-primary\/90 { background-color: rgba(226, 232, 240, 0.90) !important; }
+  /* hover:bg-primary/90 fallback removed */
+  .dark .border-primary\/20 { border-color: rgba(226, 232, 240, 0.20) !important; }
+  /* hover:border-primary/20 fallback removed */
+  .dark .border-primary\/50 { border-color: rgba(226, 232, 240, 0.50) !important; }
+  .dark .ring-primary\/50 { --tw-ring-color: rgba(226, 232, 240, 0.50) !important; }
+  .dark .text-primary-foreground\/75 { color: rgba(30, 41, 59, 0.75) !important; }
+}
+}
+
+@supports not (color: oklch(0 0 0)) {
+  .bg-primary { background-color: rgb(30, 41, 59) !important; }
+  .blue .bg-primary { background-color: rgb(59, 130, 246) !important; }
+  .green .bg-primary { background-color: rgb(22, 163, 74) !important; }
+  .purple .bg-primary { background-color: rgb(139, 92, 246) !important; }
+  .orange .bg-primary { background-color: rgb(234, 88, 12) !important; }
+  .dark .bg-primary { background-color: rgb(226, 232, 240) !important; }
+}
+
+/* Specific selected-state color fallbacks for Chromium 109 */
+@supports not (color: oklch(0 0 0)) {
+  /* Ring fallback used by Task List selected Button */
+  .ring-blue-500\/50 { --tw-ring-color: rgba(59, 130, 246, 0.50) !important; }
+
+  /* Gradient fallbacks used by Task List */
+  .from-blue-600 {
+    --tw-gradient-from: rgb(37, 99, 235) !important;
+  }
+  .to-blue-500 {
+    --tw-gradient-to: rgb(59, 130, 246) !important;
+  }
+  .from-blue-500\/20 {
+    --tw-gradient-from: rgba(59, 130, 246, 0.20) !important;
+  }
+  .to-purple-500\/20 {
+    --tw-gradient-to: rgba(139, 92, 246, 0.20) !important;
+  }
+}
+
+@layer utilities {
+  .selected-task-bg { background-color: rgba(30, 41, 59, 0.05) !important; }
+  .blue .selected-task-bg { background-color: rgba(59, 130, 246, 0.05) !important; }
+  .green .selected-task-bg { background-color: rgba(22, 163, 74, 0.05) !important; }
+  .purple .selected-task-bg { background-color: rgba(139, 92, 246, 0.05) !important; }
+  .orange .selected-task-bg { background-color: rgba(234, 88, 12, 0.05) !important; }
+  .dark .selected-task-bg { background-color: rgba(226, 232, 240, 0.05) !important; }
+}

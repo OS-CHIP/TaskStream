@@ -1,0 +1,1 @@
+export { ProjectStatsPage as default } from '@/features/dashboard'

@@ -1,0 +1,139 @@
+{
+  "detail": {
+    "loading": "加载任务详情中...",
+    "notFound": "任务不存在或已被删除",
+    "tabs": {
+      "basic": "基本信息",
+      "timeline": "任务动态",
+      "comments": "评论"
+    },
+    "description": {
+      "title": "任务描述",
+      "empty": "暂无任务描述"
+    },
+    "parentTasks": {
+      "title": "父任务",
+      "empty": "暂无父任务",
+      "assigneeLabel": "负责人",
+      "dueLabel": "截止"
+    },
+    "subtasks": {
+      "title": "子任务",
+      "empty": "暂无子任务",
+      "progress": "完成进度"
+    },
+    "attachments": {
+      "title": "附件 ({{count}})",
+      "empty": "暂无附件",
+      "imageBadge": "图片"
+    },
+    "timeline": {
+      "title": "任务动态",
+      "badge": "{{count}} 条记录",
+      "loading": "加载中...",
+      "loadMore": "加载更多",
+      "noMore": "没有更多数据了",
+      "empty": "暂无任务动态",
+      "fieldLabel": "字段",
+      "changedBy": "变更人",
+      "updatedTo": "更新为：{{value}}",
+      "fields": {
+        "priority": "优先级",
+        "status": "状态",
+        "title": "标题",
+        "description": "描述",
+        "assignee": "负责人",
+        "dueDate": "截止时间",
+        "estimatedHours": "预估工时",
+        "actualHours": "实际工时",
+        "type": "任务类型",
+        "parentId": "父任务"
+      },
+      "user": {
+        "system": "系统",
+        "unknown": "未知用户"
+      }
+    },
+    "comments": {
+      "title": "评论 ({{count}})",
+      "loading": "加载评论中...",
+      "list": "评论列表",
+      "refreshTitle": "刷新评论列表",
+      "empty": "暂无评论，来添加第一条评论吧！",
+      "replyAction": "回复",
+      "replyTo": "回复",
+      "edited": "已编辑",
+      "replyPlaceholder": "回复评论...",
+      "replySubmit": "回复",
+      "form": {
+        "write": "编写",
+        "preview": "预览",
+        "previewEmpty": "暂无内容预览",
+        "tips": "支持 Markdown 语法，输入 @ 提及成员，# 提及任务",
+        "submit": "发布评论",
+        "placeholder": "添加评论..."
+      },
+      "toast": {
+        "publishSuccess": "评论发布成功",
+        "publishFailed": "评论发布失败",
+        "replySuccess": "回复发布成功",
+        "replyFailed": "回复发布失败",
+        "insertedTask": "已插入任务链接：{{title}}",
+        "mentionedUser": "已提及成员：{{name}}",
+        "insertImages": "已插入 {{count}} 张图片",
+        "uploadFailed": "图片上传失败",
+        "uploadFailedRetry": "图片上传失败，请重试",
+        "imageTooLarge": "图片大小不能超过 10MB"
+      }
+    },
+    "toast": {
+      "statusUpdated": "任务状态更新成功",
+      "statusUpdateFailed": "更新任务状态失败",
+      "priorityUpdated": "任务优先级更新成功",
+      "priorityUpdateFailed": "更新任务优先级失败"
+    },
+    "header": {
+      "updating": "更新中...",
+      "transfer": "转单"
+    },
+    "transferDialog": {
+      "title": "转单给其他成员",
+      "selectMember": "选择成员",
+      "placeholderLoading": "加载中...",
+      "placeholderSelect": "请选择转单成员",
+      "reasonLabel": "转单原因 *",
+      "reasonPlaceholder": "请填写转单原因...",
+      "cancel": "取消",
+      "confirm": "确认转单",
+      "transferring": "转单中..."
+    },
+    "transferToast": {
+      "projectIdMissing": "未找到项目ID",
+      "membersLoadFailed": "获取项目成员失败",
+      "fail": "转单失败",
+      "failRetry": "转单失败，请重试",
+      "success": "转单成功"
+    },
+    "basicInfo": {
+      "title": "基本信息",
+      "creator": "创建人",
+      "owner": "负责人",
+      "assigner": "分配人",
+      "assignee": "执行人",
+      "estimatedHours": "预估工时",
+      "createdAt": "创建时间",
+      "startTime": "开始时间",
+      "dueDate": "截止时间",
+      "parentTask": "父任务",
+      "taskType": "任务类型",
+      "updatedAt": "更新时间",
+      "unknownTime": "未知时间",
+      "hoursUnit": "小时"
+    }
+  }
+  ,
+  "create": {
+    "observers": "参与者",
+    "observersPlaceholder": "请选择观察者（可多选）"
+  }
+}

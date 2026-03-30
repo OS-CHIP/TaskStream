@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+.trae/*
+.trae/rules/*
+.env
+.trae
+.tanstack
+# Editor directories and files
+.codebuddy/*
+docs/*
+.tanstack/*
+.figma/*
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+pnpm-lock.yaml
+.trae/rules/project_rules.md
+.codebuddy/.rules/my-rule.mdc
+.codebuddy/analysis-summary.json

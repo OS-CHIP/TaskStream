@@ -1,0 +1,157 @@
+{
+  "title": "项目管理",
+  "list": {
+    "title": "项目列表",
+    "searchPlaceholder": "按名称或Key搜索…",
+    "create": "新建项目",
+    "empty": "请先加入项目或者创建项目",
+    "emptyPrefix": "请先加入项目或者",
+    "emptyCreate": "创建项目",
+    "loading": "加载项目中…",
+    "all": "全部",
+    "total": "共 {{count}} 个"
+  },
+  "relation": {
+    "link": "关联父子关系",
+    "title": "关联父子关系",
+    "parent": "父项目",
+    "child": "子项目",
+    "parentPlaceholder": "选择父项目",
+    "childPlaceholder": "选择子项目",
+    "confirm": "确认关联",
+    "cancel": "取消",
+    "successPrefix": "已关联："
+  },
+  "pagination": {
+    "prev": "上一页",
+    "next": "下一页",
+    "pageXofY": "第 {{x}} / {{y}} 页"
+  },
+  "toast": {
+    "loadFailed": "加载项目失败",
+    "createSuccess": "创建成功",
+    "createFailed": "创建失败",
+    "saveSuccess": "保存成功",
+    "saveFailed": "保存失败",
+    "deleteSuccess": "删除成功",
+    "deleteFailed": "删除失败",
+    "inviteSent": "邀请已发送",
+    "memberAdded": "已添加成员",
+    "updateRoleSuccess": "已更新角色",
+    "updateRoleFailed": "更新角色失败",
+    "removeSuccess": "已移除成员",
+    "removeFailed": "移除失败"
+  },
+  "detail": {
+    "overview": "概览",
+    "members": "成员",
+    "settings": "设置",
+    "notFound": "未找到该项目",
+    "overviewTitle": "项目概览",
+    "inviteButton": "邀请成员",
+    "labels": {
+      "desc": "描述",
+      "visibility": "可见性",
+      "createdAt": "创建时间",
+      "updatedAt": "更新时间",
+      "id": "ID",
+      "key": "Key"
+    }
+  },
+  "form": {
+    "name": "名称",
+    "key": "Key",
+    "description": "描述",
+    "visibility": "可见性",
+    "submit": "提交",
+    "cancel": "取消",
+    "placeholders": {
+      "name": "请输入项目名称",
+      "key": "例如 alpha-project",
+      "description": "可选：项目简介"
+    }
+  },
+  "status": {
+    "1": "可见",
+    "2": "不可见",
+    "visible": "可见",
+    "hidden": "不可见"
+  },
+  "invite": {
+    "title": "邀请成员",
+    "method": {
+      "email": "邮箱邀请",
+      "username": "按用户名添加"
+    },
+    "selectRole": "选择角色",
+    "role": {
+      "member": "成员",
+      "admin": "管理员"
+    },
+    "email": "邮箱",
+    "username": "用户名",
+    "send": "发送邀请",
+    "sending": "邀请中…",
+    "targetRequired": "请输入邀请目标",
+    "loadRolesFailed": "加载角色列表失败",
+    "success": "邀请已成功发送至 {{email}}",
+    "validation": {
+      "roleRequired": "请选择角色",
+      "emailInvalid": "请输入有效的邮箱地址",
+      "usernameInvalid": "用户名仅限字母、数字、下划线，长度3-50字符"
+    }
+  },
+  "roles": {
+    "loading": "加载角色中...",
+    "noRoles": "暂无可用角色"
+  },
+  "member": {
+    "searchPlaceholder": "按姓名或用户ID搜索…",
+    "remove": "移除",
+    "noMatch": "暂无匹配成员",
+    "role": {
+      "owner": "所有者",
+      "admin": "管理员",
+      "member": "成员"
+    },
+    "confirmRemove": {
+      "title": "确认移除成员",
+      "description": "您确定要移除以下成员吗？此操作无法撤销。",
+      "confirm": "确认移除",
+      "cancel": "取消"
+    }
+  },
+  "card": {
+    "edit": "编辑",
+    "delete": "删除",
+    "key": "key",
+    "createSub": "创建子项目"
+  },
+  "sub": {
+    "title": "创建子项目",
+    "parent": "父项目",
+    "assignee": "子项目负责人",
+    "assigneePlaceholder": "选择负责人",
+    "create": "创建子项目"
+  },
+  "deleteDialog": {
+    "title": "删除项目",
+    "description": "此操作不可撤销，项目的所有数据将被永久删除。",
+    "aboutToDelete": "即将删除的项目：",
+    "confirmLabel": "请输入项目名称",
+    "confirmPlaceholder": "请输入：{{name}}",
+    "nameNotMatch": "输入的项目名称不匹配",
+    "cancel": "取消",
+    "confirm": "确认删除",
+    "deleting": "删除中..."
+  },
+  "settings": {
+    "save": "保存设置",
+    "saving": "保存中…"
+  },
+  "visibility": {
+    "private": "私有",
+    "public": "公开",
+    "internal": "内部"
+  }
+}

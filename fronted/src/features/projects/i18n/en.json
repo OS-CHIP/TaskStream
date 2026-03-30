@@ -1,0 +1,156 @@
+{
+  "title": "Projects",
+  "list": {
+    "title": "Project List",
+    "searchPlaceholder": "Search by name or key…",
+    "create": "New Project",
+    "empty": "No projects yet",
+    "emptyPrefix": "Please join a project or ",
+    "emptyCreate": "create a project",
+    "loading": "Loading projects…",
+    "all": "All",
+    "total": "{{count}} in total"
+  },
+  "relation": {
+    "link": "Link Parent-Child",
+    "title": "Link Parent-Child",
+    "parent": "Parent Project",
+    "child": "Child Project",
+    "parentPlaceholder": "Select parent project",
+    "childPlaceholder": "Select child project",
+    "confirm": "Confirm Link",
+    "cancel": "Cancel",
+    "successPrefix": "Linked: "
+  },
+  "pagination": {
+    "prev": "Prev",
+    "next": "Next",
+    "pageXofY": "Page {{x}} / {{y}}"
+  },
+  "toast": {
+    "loadFailed": "Failed to load projects",
+    "createSuccess": "Created successfully",
+    "createFailed": "Failed to create",
+    "saveSuccess": "Saved successfully",
+    "saveFailed": "Failed to save",
+    "deleteSuccess": "Deleted successfully",
+    "deleteFailed": "Failed to delete",
+    "inviteSent": "Invitation sent",
+    "memberAdded": "Member added",
+    "updateRoleSuccess": "Role updated",
+    "updateRoleFailed": "Failed to update role",
+    "removeSuccess": "Member removed",
+    "removeFailed": "Failed to remove"
+  },
+  "detail": {
+    "overview": "Overview",
+    "members": "Members",
+    "settings": "Settings",
+    "notFound": "Project not found",
+    "overviewTitle": "Project Overview",
+    "inviteButton": "Invite Members",
+    "labels": {
+      "desc": "Description",
+      "status": "Status",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "id": "ID",
+      "key": "Key"
+    }
+  },
+  "form": {
+    "name": "Name",
+    "key": "Key",
+    "description": "Description",
+    "status": "Status",
+    "visibility": "Visibility",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "placeholders": {
+      "name": "Enter project name",
+      "key": "e.g. alpha-project",
+      "description": "Optional: project summary"
+    }
+  },
+  "status": {
+    "1": "Visible",
+    "2": "Hidden"
+  },
+  "invite": {
+    "invite": "Invite Members",
+    "method": {
+      "email": "Invite by Email",
+      "username": "Add by Username"
+    },
+    "selectRole": "Select a role",
+    "role": {
+      "member": "Member",
+      "admin": "Admin"
+    },
+    "email": "Email",
+    "username": "Username",
+    "send": "Send Invite",
+    "sending": "Inviting…",
+    "targetRequired": "Please enter a target",
+    "loadRolesFailed": "Failed to load roles",
+    "success": "Invitation sent successfully to {{email}}",
+    "validation": {
+      "roleRequired": "Please select a role",
+      "emailInvalid": "Please enter a valid email address",
+      "usernameInvalid": "Username must be 3-50 characters of letters, numbers, or underscores"
+    }
+  },
+  "roles": {
+    "loading": "Loading roles...",
+    "noRoles": "No roles available"
+  },
+  "member": {
+    "searchPlaceholder": "Search by name or user ID…",
+    "remove": "Remove",
+    "noMatch": "No matching members",
+    "role": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member"
+    },
+    "confirmRemove": {
+      "title": "Confirm Remove Member",
+      "description": "Are you sure you want to remove the following member? This action cannot be undone.",
+      "confirm": "Remove",
+      "cancel": "Cancel"
+    }
+  },
+  "card": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "key": "key",
+    "createSub": "Create Subproject"
+  },
+  "sub": {
+    "title": "Create Subproject",
+    "parent": "Parent Project",
+    "assignee": "Subproject Owner",
+    "assigneePlaceholder": "Select owner",
+    "create": "Create Subproject"
+  },
+  "deleteDialog": {
+    "title": "Delete Project",
+    "description": "This action cannot be undone. All project data will be permanently deleted.",
+    "aboutToDelete": "Project to be deleted:",
+    "confirmLabel": "Please enter project name",
+    "confirmPlaceholder": "Enter: {{name}}",
+    "nameNotMatch": "Project name does not match",
+    "cancel": "Cancel",
+    "confirm": "Confirm Delete",
+    "deleting": "Deleting..."
+  },
+  "settings": {
+    "save": "Save Settings",
+    "saving": "Saving…"
+  },
+  "visibility": {
+    "private": "Private",
+    "public": "Public",
+    "internal": "Internal"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "list": {
+    "title": "任务类型管理",
+    "description": "管理项目中的任务类型，定义不同类型的任务属性和行为",
+    "create": "新建任务类型",
+    "searchPlaceholder": "搜索任务类型...",
+    "empty": "暂无任务类型",
+    "noMatch": "没有找到匹配的任务类型",
+    "table": {
+      "name": "名称",
+      "description": "描述",
+      "status": "状态",
+      "actions": "操作"
+    },
+    "status": {
+      "enabled": "启用",
+      "disabled": "禁用"
+    },
+    "actions": {
+      "edit": "编辑",
+      "configTemplate": "配置模板",
+      "delete": "删除"
+    },
+    "deleteDialog": {
+      "title": "删除任务类型",
+      "desc": "确定要删除任务类型 \"{{name}}\" 吗？此操作不可恢复。",
+      "confirm": "删除",
+      "cancel": "取消",
+      "success": "任务类型 \"{{name}}\" 已删除"
+    }
+  },
+  "form": {
+    "createTitle": "创建任务类型",
+    "editTitle": "编辑任务类型",
+    "createDesc": "创建新的任务类型，用于分类管理任务",
+    "editDesc": "修改任务类型信息",
+    "error": {
+      "nameRequired": "任务类型名称不能为空",
+      "selectProject": "请先选择项目",
+      "updateFailed": "更新任务类型失败",
+      "createFailed": "创建任务类型失败"
+    },
+    "fields": {
+      "name": "任务类型名称 *",
+      "namePlaceholder": "请输入任务类型名称",
+      "description": "描述",
+      "descriptionPlaceholder": "请输入任务类型描述（可选）",
+      "isHidden": "是否隐藏（隐藏后列表中显示为禁用）"
+    },
+    "buttons": {
+      "cancel": "取消",
+      "saving": "保存中...",
+      "update": "更新",
+      "create": "创建"
+    }
+  },
+  "detail": {
+    "loading": "加载模板详情中...",
+    "notFound": "未找到对应的模板，请返回任务类型列表。",
+    "back": "返回",
+    "namePrefix": "任务类型",
+    "templateSuffix": "模板"
+  }
+}

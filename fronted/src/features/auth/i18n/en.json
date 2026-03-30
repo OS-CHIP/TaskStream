@@ -1,0 +1,51 @@
+{
+  "signUp": {
+    "title": "Create an account",
+    "description": "Enter your email, username and password to create an account.",
+    "hasAccount": "Already have an account?",
+    "signInLink": "Sign In",
+    "emailLabel": "Email",
+    "emailPlaceholder": "name@example.com",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "your_username",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "passwordPlaceholder": "********",
+    "createAccount": "Create Account",
+    "loading": "Creating...",
+    "success": "Account created successfully!",
+    "error": "Registration failed, please try again",
+    "terms": {
+      "prefix": "By creating an account, you agree to our",
+      "tos": "Terms of Service",
+      "and": "and",
+      "privacy": "Privacy Policy"
+    },
+    "validation": {
+      "emailRequired": "Please enter your email",
+      "passwordRequired": "Please enter your password",
+      "passwordMin": "Password must be at least 7 characters long",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordNotMatch": "Passwords don't match.",
+      "usernameRequired": "Please enter your username",
+      "usernameMin": "Username must be at least 3 characters long"
+    }
+  },
+  "signIn": {
+    "title": "Sign In",
+    "subtitle": "Enter your username and password to sign in.",
+    "haveNoAccount": "Don't have an account?",
+    "form": {
+      "username": { "label": "Username", "placeholder": "your_username" },
+      "password": { "label": "Password", "placeholder": "********" },
+      "forgot": "Forgot password?",
+      "submit": "Sign In"
+    },
+    "validation": {
+      "usernameRequired": "Please enter your username",
+      "passwordRequired": "Please enter your password",
+      "passwordMin": "Password must be at least 7 characters long"
+    }
+  }
+}
